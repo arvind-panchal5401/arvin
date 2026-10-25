@@ -1,10 +1,19 @@
 const express = require('express')
 
+const cors =  require('cors')
 const newModel = require('./models/notes.models')
+
+
+
+const path =require('path')
 
 const app = express()
 
+app.use(cors())
+
 app.use(express.json())
+
+app.use(express.static("./public"))
 
 
 app.post('/notes', async (req, res) => {
@@ -43,11 +52,18 @@ app.delete('/notes/:id', async (req, res) => {
 
 app.patch('/notes/:id', async (req, res) => {
     const id = req.params.id
-    const {description} = req.body  
-    await newModel.findByIdAndUpdate(id, { description })
+    const {title ,description} = req.body  
+    await newModel.findByIdAndUpdate(id, {title, description })
     
     res.status(200).json({
         message:"Note updated sucessfully"
     })
 })
+
+app.use('*name', (req, res) => {
+    res.sendFile(path.join(__dirname,"..","/public/index.html"))
+})
+
+
+
 module.exports = app
