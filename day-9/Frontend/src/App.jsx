@@ -9,7 +9,7 @@ const App = () => {
   const [description, setDescription] = useState('')
   const [modifyId, setModifyId] = useState(null)
   function featchData() {
-    axios.get('http://localhost:3000/notes')
+    axios.get('https://arvin-1.onrender.com/notes')
       .then((res) => {
         setNotes(res.data.note)
       })
@@ -22,7 +22,7 @@ const App = () => {
   function submitHandler(e) {
     e.preventDefault()
     if (modifyId) {
-      axios.patch(`http://localhost:3000/notes/${modifyId}`, {
+      axios.patch(`https://arvin-1.onrender.com/notes/${modifyId}`, {
         title: title,
         description: description
       }).then((res) => {
@@ -34,7 +34,7 @@ const App = () => {
       })
     }
     else
-      axios.post(`http://localhost:3000/notes`, {
+      axios.post(`https://arvin-1.onrender.com/notes`, {
         title: title,
         description: description
       }).then(res => {
@@ -49,7 +49,7 @@ const App = () => {
   }
 
   function delectHandler(noteId) {
-    axios.delete(`http://localhost:3000/notes/${noteId}`)
+    axios.delete(`https://arvin-1.onrender.com/notes/${noteId}`)
       .then((res) => {
         console.log(res.data);
         featchData()
