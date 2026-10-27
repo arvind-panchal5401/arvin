@@ -3,9 +3,8 @@ const express = require('express')
 const cors =  require('cors')
 const newModel = require('./models/notes.models')
 
+const path = require('path')
 
-
-const path =require('path')
 
 const app = express()
 
@@ -13,7 +12,7 @@ app.use(cors())
 
 app.use(express.json())
 
-app.use(express.static("./public"))
+app.use(express.static(path.join(__dirname, '../public/dist')))
 
 
 app.post('/notes', async (req, res) => {
@@ -60,9 +59,7 @@ app.patch('/notes/:id', async (req, res) => {
     })
 })
 
-app.use('*name', (req, res) => {
-    res.sendFile(path.join(__dirname,"..","/public/index.html"))
-})
+
 
 
 

@@ -7,7 +7,7 @@ const App = () => {
   ])
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [modifyId, setModifyId] = useState([])
+  const [modifyId, setModifyId] = useState(null)
   function featchData() {
     axios.get('http://localhost:3000/notes')
       .then((res) => {
