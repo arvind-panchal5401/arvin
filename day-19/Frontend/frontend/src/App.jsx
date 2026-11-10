@@ -1,12 +1,14 @@
 import React from 'react'
 import AppRoutes from './AppRoutes'
-import { RouterProvider } from 'react-router-dom'
 import './style.scss'
+import { AuthProvider } from './features/auth/auth.context.jsx'
 
 const App = () => {
   return (
     <div>
-      <AppRoutes/>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </div>
   )
 }

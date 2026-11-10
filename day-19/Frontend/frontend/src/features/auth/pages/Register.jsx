@@ -7,19 +7,6 @@ const Register = () => {
   const [email, setuserEmail] = useState('')
   const [password, setuserPassword] = useState('')
 
-  async function registerApi() {
-    axios.post('http://localhost:3000/api/auth/register', {
-      username,
-      email,
-      password
-    }, {
-      withCredentials: true
-    }
-    ).then(res => {
-      console.log(res.data);
-      
-    })
-  }
 
 
   async function submitHandler(e) {
