@@ -34,6 +34,7 @@ async function createpostController(req, res) {
         user: req.user.id
 
     })
+    await post.populate('user')
 
     res.status(201).json({
         message: 'Post is created sucessfully',
@@ -118,36 +119,58 @@ async function likepostController(req, res) {
     }
 
 }
+async function unLikepostController(req, res) {
+
+    const postId = req.params.postId
+    const userId = req.user.id;
+
+    const isliked = await likepostModel.findOne({
+        post: postId,
+        user: userId
+
+    })
+    if (!isliked) {
+        res.status(400).json({
+            message:"post didn't like "
+        })
+    }
+    await likepostModel.findOneAndDelete({ _id: isliked._id })
+    return res.status(200).json({
+        message:'post un liked sucessfully. '
+    })
+
+}
 
 async function getFeedController(req, res) {
 
     const user = req.user
     const posts = await Promise.all((await postModel.find().populate('user').lean())
-        .map(async (post) => { 
+        .map(async (post) => {
             const isLiked = await likepostModel.findOne({
                 user: user.id,
-                post:post._id
-                
+                post: post._id
+
             })
 
-            post.isLiked = !! isLiked
+            post.isLiked = !!isLiked
             return post
 
-            
+
         }))
 
     res.status(200).json({
         message: 'post fetched sucessfully',
         posts
     })
-    
+
 }
 
 
 
 module.exports = {
     createpostController,
-    getpostController, getpostdeatilsController, likepostController,
+    getpostController, getpostdeatilsController, likepostController,unLikepostController,
     getFeedController
+    
 
 }

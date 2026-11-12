@@ -1,8 +1,7 @@
 const express = require('express')
 const cookies = require('cookie-parser')
 const app = express()
-const multer = require('multer')
-const upload = multer({ storage: multer.memoryStorage() })
+
 const cors = require('cors')
 
 app.use(express.json())
@@ -21,7 +20,7 @@ const userrouter = require('./routes/user.routes')
 
 
 app.use('/api/auth', authRouter)
-app.use('/api/posts', upload.single("image"), postRouter)
+app.use('/api/posts', postRouter)
 app.use('/api/user', userrouter)
 
 module.exports = app
