@@ -1,28 +1,54 @@
 import { useEffect, useRef, useState } from "react";
-import { detect, init } from "../services/mediaPipe";
+import { init } from "../services/mediaPipe";
 
 export default function FaceExpression() {
     const videoRef = useRef(null);
     const landmarkerRef = useRef(null);
     const animationRef = useRef(null);
-    const setStrem = useRef()
+    const streamRef = useRef(null);
     const [expression, setExpression] = useState("Detecting...");
-   
+    const [error, setError] = useState("");
+
     useEffect(() => {
-   
-        init({landmarkerRef,videoRef,setStrem});
-        return () => {
+        let isActive = true;
+
+        const releaseResources = () => {
             if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current);
+                animationRef.current = null;
             }
             if (landmarkerRef.current) {
                 landmarkerRef.current.close();
+                landmarkerRef.current = null;
             }
-            if (videoRef.current?.srcObject) {
-                videoRef.current.srcObject
-                    .getTracks()
-                    .forEach((track) => track.stop());
+            if (streamRef.current) {
+                streamRef.current.getTracks().forEach((track) => track.stop());
+                streamRef.current = null;
             }
+            if (videoRef.current) {
+                videoRef.current.srcObject = null;
+            }
+        };
+
+        init({
+            landmarkerRef,
+            videoRef,
+            setStream: streamRef,
+            setExpression,
+            animationRef,
+            isActive: () => isActive
+        }).catch((initializationError) => {
+            if (isActive) {
+                releaseResources();
+                setError(initializationError instanceof Error
+                    ? initializationError.message
+                    : "Unable to initialize face detection.");
+            }
+        });
+
+        return () => {
+            isActive = false;
+            releaseResources();
         };
     }, []);
     return (
@@ -32,8 +58,8 @@ export default function FaceExpression() {
                 style={{ width: "400px", borderRadius: "12px" }}
                 playsInline
             />
-            <h2>{expression}</h2>
-            <button onClick={()=>{detect({landmarkerRef,videoRef,setExpression})}}>Detected Expression</button>
+            <h2 aria-live="polite">{error ? "Face detection unavailable" : expression}</h2>
+            {error && <p role="alert">{error}</p>}
         </div>
     );
 }

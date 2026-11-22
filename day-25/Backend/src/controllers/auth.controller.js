@@ -1,6 +1,9 @@
 const userModel = require('../models/user.model')
+
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const blacklistModel = require('../models/blacklist.model');
+const redis = require('../config/catche');
 
 async function registerController(req, res) {
     const { username, email, password } = req.body;
@@ -45,7 +48,7 @@ async function loginController(req, res) {
             { email }
             
         ]
-    })
+    }).select("+password")
     if (!user) {
         return res.status(404).json({
             message:'Invaild credentials'
@@ -74,5 +77,29 @@ async function loginController(req, res) {
     })
     
 }
+async function getMe(req, res) {
+    
+    const user = await userModel.findById(req.user.id)
+    
+    return res.status(201).json({
+        message: 'user fetched sucessfully',
+        user
+    })
+    
+}
+async function logoutController(req, res) {
+    
+    const token = req.cookies.token
 
-module.exports={registerController,loginController}
+    res.clearCookie('token')
+
+    await redis.set(token,Date.now().toString(),"EX",60*60)
+    return res.status(200).json({
+    message:'logout user sucessfully'
+})
+    
+
+    
+}
+
+module.exports={registerController,loginController,getMe,logoutController}

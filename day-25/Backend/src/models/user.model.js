@@ -13,7 +13,8 @@ const userSchema = new mongosse.Schema({
     password: {
         type: String,
         required: [true, 'password is required'],
-        unique:[true,'password must be unique']
+        unique: [true, 'password must be unique'],
+        select:false
     }
 })
 const userModel = mongosse.model('user', userSchema)

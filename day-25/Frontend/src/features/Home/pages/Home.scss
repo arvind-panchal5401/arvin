@@ -1,0 +1,89 @@
+.home-page {
+    width: min(100% - 2rem, 1080px);
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: clamp(2rem, 7vh, 5rem) 0;
+
+    .home-header {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        margin-bottom: 2.5rem;
+
+        h1 {
+            color: #f7f4ff;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 650;
+            letter-spacing: -0.035em;
+        }
+    }
+
+    .home-brand-mark {
+        display: grid;
+        width: 2.75rem;
+        height: 2.75rem;
+        place-items: center;
+        color: #241d38;
+        background: #c3adff;
+        border-radius: 0.9rem;
+        font-size: 1.5rem;
+    }
+
+    .home-eyebrow {
+        margin-bottom: 0.2rem;
+        color: #aaa1bf;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+    }
+
+    .home-content {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 440px);
+        align-items: center;
+        gap: clamp(1.5rem, 5vw, 4rem);
+    }
+
+    .expression-panel {
+        display: grid;
+        min-height: 23rem;
+        place-items: center;
+        padding: 1.5rem;
+        background: #17151f;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 1.25rem;
+
+        video {
+            max-width: 100%;
+        }
+
+        h2 {
+            margin: 1rem 0;
+            color: #f4f1ff;
+            font-size: 1.1rem;
+        }
+
+        button {
+            padding: 0.7rem 1rem;
+            color: #241d38;
+            background: #c3adff;
+            border: 0;
+            border-radius: 0.65rem;
+            font: inherit;
+            font-weight: 650;
+            cursor: pointer;
+
+            &:hover {
+                background: #d3c4ff;
+            }
+        }
+    }
+}
+
+@media (max-width: 760px) {
+    .home-page {
+        .home-content {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}

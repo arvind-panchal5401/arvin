@@ -1,6 +1,5 @@
 const app = require('./src/app')
-const dns = require('dns')
-dns.setServers(['8.8.8.8', '8.8.4.4'])
+
 
 require("dotenv").config()
 
